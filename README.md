@@ -1,2 +1,5 @@
 # trie-perf
-Performance shootout of various trie implementations
+
+[![Build Status](https://travis-ci.org/ocramz/trie-perf.png)](https://travis-ci.org/ocramz/trie-perf)
+
+TODO Description.
