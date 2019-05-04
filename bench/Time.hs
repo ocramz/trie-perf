@@ -14,23 +14,8 @@ import Criterion.Monad (withConfig)
 -- import Control.Monad.Primitive
 import System.Random.MWC.Probability (withSystemRandom)
 
-import Bench.Trie.Time (randTrieInput)
+import Bench.Trie (randTrieInput, ag, jl, gt)
 
-import qualified Data.Trie.AlexanderGreen as AG (Trie, Key, fromList, lookup)
-import qualified Data.Trie.JustinLe as JL (Trie, fromList, lookup)
-
-import qualified Data.GenericTrie as GT (Trie, fromList, lookup, TrieKey)
-
-
-
-ag :: Eq a => ([(AG.Key a, b)], AG.Key a) -> Maybe b
-ag (kxs, k) = AG.lookup k $ AG.fromList kxs
-
-jl :: Ord k => ([([k], v)], [k]) -> Maybe v
-jl (kxs, k) = JL.lookup k $ JL.fromList kxs
-
-gt :: GT.TrieKey k => ([(k, a)], k) -> Maybe a
-gt (kxs, k) = GT.lookup k $ GT.fromList kxs
 
 main :: IO ()
 main = withSystemRandom $ \g -> do
