@@ -30,6 +30,8 @@ library
   build-depends:       base >= 4.7 && < 5
                      , containers
                      , data-fix
+                     , mwc-probability
+                     , primitive
   if flag(Time)
     exposed-modules:   Bench.Trie.Time
     build-depends:     criterion             >= 1.5 && < 1.6,
