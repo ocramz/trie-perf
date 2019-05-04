@@ -14,30 +14,38 @@ import Criterion.Monad (withConfig)
 -- import Control.Monad.Primitive
 import System.Random.MWC.Probability (withSystemRandom)
 
-import Bench.Trie (randTrieInput, ag, jl, gt)
+import Bench.Trie (randTrieInputString, randTrieInputBS, ag, jl, gt, bt)
 
 
 main :: IO ()
 main = withSystemRandom $ \g -> do
-  xsmall <- randTrieInput 3 3 1 g
-  xmedium <- randTrieInput 30 30 10 g
-  xlarge <- randTrieInput 300 300 100 g   
+  ssmall <- randTrieInputString 3 3 1 g
+  smedium <- randTrieInputString 30 30 10 g
+  slarge <- randTrieInputString 300 300 100 g
+  bssmall <- randTrieInputBS 3 3 1 g
+  bsmedium <- randTrieInputBS 30 30 10 g
+  bslarge <- randTrieInputBS 300 300 100 g     
   defaultMain [
     bgroup "AG" [
-        bench "small" $ whnf ag xsmall
-      , bench "medium" $ whnf ag xmedium
-      , bench "large" $ whnf ag xlarge      
+        bench "small" $ whnf ag ssmall
+      , bench "medium" $ whnf ag smedium
+      , bench "large" $ whnf ag slarge 
               ] ,
     bgroup "JL" [
-        bench "small" $ whnf jl xsmall
-      , bench "medium" $ whnf jl xmedium
-      , bench "large" $ whnf ag xlarge      
+        bench "small" $ whnf jl ssmall
+      , bench "medium" $ whnf jl smedium
+      , bench "large" $ whnf ag slarge      
               ] ,
     bgroup "generic-trie" [
-        bench "small" $ whnf gt xsmall
-      , bench "medium" $ whnf gt xmedium
-      , bench "large" $ whnf gt xlarge      
-              ]       
+        bench "small" $ whnf gt ssmall
+      , bench "medium" $ whnf gt smedium
+      , bench "large" $ whnf gt slarge      
+              ] ,
+    bgroup "bytestring-trie" [
+        bench "small" $ whnf bt bssmall
+      , bench "medium" $ whnf bt bsmedium
+      , bench "large" $ whnf bt bslarge      
+              ]      
     ]
 
 
