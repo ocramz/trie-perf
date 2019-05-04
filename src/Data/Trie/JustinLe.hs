@@ -1,8 +1,9 @@
 {-# language DeriveFunctor #-}
-module Data.Trie.JustinLe where
+module Data.Trie.JustinLe (Trie, lookup, fromList, singleton) where
 
-import Data.Fix (Fix(..), cata, cataM, ana, anaM, hylo, hyloM)
+import Data.Fix (Fix(..), cata, ana)
 import qualified Data.Map as M
+import Prelude hiding (lookup)
 
 {- | from 
 https://blog.jle.im/entry/tries-with-recursion-schemes.html
@@ -16,11 +17,8 @@ newtype Trie k v = Trie { unTrie :: Fix (TrieF k v) } deriving (Show)
 
 cataTrie :: (TrieF k v a -> a) -> Trie k v -> a
 cataTrie phi t = cata phi (unTrie t)
-
 anaTrie :: (a -> TrieF k v a) -> a -> Trie k v
 anaTrie psi z = Trie $ ana psi z
-
-
 
 
 lookup :: Ord k => [k] -> Trie k v -> Maybe v
@@ -37,7 +35,6 @@ lookupAlg (TF v looks) kss = case kss of
 
 fromList :: (Ord k) => [([k], v)] -> Trie k v
 fromList = fromMap . M.fromList
-
 
 fromMap :: Ord k => M.Map [k] v -> Trie k v
 fromMap = anaTrie fromMapCo

@@ -1,4 +1,4 @@
-module Data.Trie.AlexanderGreen where
+module Data.Trie.AlexanderGreen (Trie, lookup, fromList)where
 
 import Prelude hiding (lookup)
 
@@ -8,14 +8,14 @@ https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/
 
 
 -- | Prefix tree
-data PFTree a b = Node (Maybe b) (a -> Maybe (PFTree a b)) 
+data Trie a b = Node (Maybe b) (a -> Maybe (Trie a b)) 
 
 -- | Empty prefix tree
-empty :: PFTree a b
+empty :: Trie a b
 empty = Node Nothing (const Nothing)
 
--- | Lookup inside a 'PFTree' with a 'Key'
-lookup :: Key a -> PFTree a b -> Maybe b
+-- | Lookup inside a 'Trie' with a 'Key'
+lookup :: Key a -> Trie a b -> Maybe b
 lookup [] (Node b _) = b
 lookup (x:xs) (Node _ f) = case f x of
   Nothing -> Nothing
@@ -24,8 +24,8 @@ lookup (x:xs) (Node _ f) = case f x of
 -- | A 'Key' is just a synonym for a list
 type Key a = [a]
 
--- | Insert an element at a given key in a 'PFTree'
-insert :: Eq a => Key a -> b -> PFTree a b -> PFTree a b
+-- | Insert an element at a given key in a 'Trie'
+insert :: Eq a => Key a -> b -> Trie a b -> Trie a b
 insert [] b (Node _ f) = Node (Just b) f
 insert (x:xs) b (Node mb f) =
   case f x of
@@ -34,8 +34,8 @@ insert (x:xs) b (Node mb f) =
     where
       insf z x' = if x' == x then Just z else f x'
 
--- | Populate a 'PFTree' from a Foldable (eg a list) of ('Key', value) pairs
-fromList :: (Foldable t, Eq a) => t (Key a, b) -> PFTree a b
+-- | Populate a 'Trie' from a Foldable (eg a list) of ('Key', value) pairs
+fromList :: (Foldable t, Eq a) => t (Key a, b) -> Trie a b
 fromList = foldl insf empty
   where
     insf t (k, x) = insert k x t
