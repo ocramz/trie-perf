@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
 module Data.Trie.AlexanderGreen (Trie, Key, lookup, fromList) where
 
 import Prelude hiding (lookup)

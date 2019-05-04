@@ -8,7 +8,7 @@ import Criterion.Measurement (initializeTime, secs)
 import Criterion.Monad (withConfig)
 
 
-import qualified Data.Trie.AlexanderGreen as AG
-import qualified Data.Trie.JustinLe as JL
+import qualified Data.Trie.AlexanderGreen as AG (Trie, Key, fromList, lookup)
+import qualified Data.Trie.JustinLe as JL (Trie, fromList, lookup)
 
 main = putStrLn "bench time : unimplemented"

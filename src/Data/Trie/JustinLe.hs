@@ -1,4 +1,5 @@
 {-# language DeriveFunctor #-}
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
 module Data.Trie.JustinLe (Trie, lookup, fromList) where
 
 import Data.Fix (Fix(..), cata, ana)
