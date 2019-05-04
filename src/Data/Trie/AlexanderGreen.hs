@@ -1,9 +1,9 @@
-module Data.Trie.AlexanderGreen (Trie, lookup, fromList)where
+module Data.Trie.AlexanderGreen (Trie, Key, lookup, fromList) where
 
 import Prelude hiding (lookup)
 
 {- | taken from 
-https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/
+@https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/@
 -}
 
 

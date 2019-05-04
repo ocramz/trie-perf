@@ -1,17 +1,18 @@
 {-# language DeriveFunctor #-}
-module Data.Trie.JustinLe (Trie, lookup, fromList, singleton) where
+module Data.Trie.JustinLe (Trie, lookup, fromList) where
 
 import Data.Fix (Fix(..), cata, ana)
 import qualified Data.Map as M
 import Prelude hiding (lookup)
 
-{- | from 
-https://blog.jle.im/entry/tries-with-recursion-schemes.html
+{- | taken from 
+@https://blog.jle.im/entry/tries-with-recursion-schemes.html@
 -}
 
 
 
 data TrieF k v x = TF (Maybe v) (M.Map k x) deriving (Functor, Show)
+
 
 newtype Trie k v = Trie { unTrie :: Fix (TrieF k v) } deriving (Show)
 

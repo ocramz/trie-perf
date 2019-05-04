@@ -4,6 +4,7 @@ module Data.Trie.BartoszMilewski (Trie, fromList) where
 import Data.Fix (Fix(..), cata, ana, hylo)
 import GHC.Exts (groupWith)
 import Prelude hiding (lookup)
+import qualified Prelude as P (lookup)
 
 
 newtype TrieF a x = TrieF [(a, x)] deriving (Show, Functor)
@@ -17,6 +18,23 @@ anaT :: (x -> TrieF a x) -> x -> Trie a
 anaT psi z = Trie $ ana psi z
 hyloT :: (TrieF a c -> c) -> (x -> TrieF a x) -> x -> c
 hyloT phi psi = cataT phi . anaT psi
+
+
+
+
+-- -- lookup :: Ord k => [k] -> Trie k v -> Maybe v
+-- lookup ks = cataT (lookupAlg ks)
+
+-- lookupAlg :: Eq a => [a] -> TrieF a [b] -> [b]
+-- lookupAlg kss (TrieF vs) = case kss of
+--   [] -> []
+--   k:_ -> case P.lookup k vs of
+--     Nothing -> []
+--     -- Just x -> [x]
+
+
+
+
 
 fromList :: Ord a => [[a]] -> Trie a
 fromList = anaT fromListF
