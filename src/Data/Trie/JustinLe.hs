@@ -1,14 +1,15 @@
 {-# language DeriveFunctor #-}
 {-# OPTIONS_GHC -Wno-unused-top-binds #-}
+{- | taken from 
+@https://blog.jle.im/entry/tries-with-recursion-schemes.html@
+-}
 module Data.Trie.JustinLe (Trie, lookup, fromList) where
 
 import Data.Fix (Fix(..), cata, ana)
 import qualified Data.Map as M
 import Prelude hiding (lookup)
 
-{- | taken from 
-@https://blog.jle.im/entry/tries-with-recursion-schemes.html@
--}
+
 
 
 

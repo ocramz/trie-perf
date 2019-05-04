@@ -30,6 +30,7 @@ library
   build-depends:       base >= 4.7 && < 5
                      , containers
                      , data-fix
+                     , generic-trie
                      , mwc-probability
                      , primitive
   if flag(Time)

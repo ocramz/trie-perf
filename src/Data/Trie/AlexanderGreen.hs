@@ -1,11 +1,12 @@
 {-# OPTIONS_GHC -Wno-unused-top-binds #-}
+{- | taken from 
+@https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/@
+-}
 module Data.Trie.AlexanderGreen (Trie, Key, lookup, fromList) where
 
 import Prelude hiding (lookup)
 
-{- | taken from 
-@https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/@
--}
+
 
 
 -- | Prefix tree
