@@ -1,4 +1,7 @@
 {-# language DeriveFunctor #-}
+{- | from 
+https://bartoszmilewski.com/2018/12/20/open-season-on-hylomorphisms/
+-}
 module Data.Trie.BartoszMilewski (Trie, fromList) where
 
 import Data.Fix (Fix(..), cata, ana, hylo)
