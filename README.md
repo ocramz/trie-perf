@@ -6,7 +6,7 @@ Performance shootout of various trie implementations.
 
 "space" benchmarking performed with `weigh` and "time" benchmarks were done with `criterion`.
 
-Currently comparing two unoptimized implementations taken (but slightly modified) from didactic blogposts (https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/ and https://blog.jle.im/entry/tries-with-recursion-schemes.html) and two available on Hackage (`generic-trie` and `bytestring-trie`).
+Currently comparing two unoptimized implementations taken (but slightly modified) from didactic blogposts (https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/ and https://blog.jle.im/entry/tries-with-recursion-schemes.html) and two available on Hackage ([`generic-trie`](https://hackage.haskell.org/package/generic-trie) and [`bytestring-trie`](https://hackage.haskell.org/package/bytestring-trie)).
 
 `generic-trie` seems to be the best choice, at least for a "lookup - fromList" pair, but I was curious to see how very diverse implementation techniques, notably one based on recursion schemes and another using an arrow type internally, lead to different space and time scaling behaviours.
 
