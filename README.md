@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ocramz/trie-perf.png)](https://travis-ci.org/ocramz/trie-perf)
 
-Performance shootout of various trie implementations.
+Performance shootout of various prefix tree ("trie") implementations.
 
 "space" benchmarking performed with `weigh` and "time" benchmarks were done with `criterion`.
 
