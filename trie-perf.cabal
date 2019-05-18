@@ -36,6 +36,7 @@ library
                      , generic-trie
                      , mwc-probability
                      , primitive
+                     , trie-simple
   if flag(Time)
     exposed-modules:   Bench.Trie.Time
     build-depends:     criterion             >= 1.5 && < 1.6,

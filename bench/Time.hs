@@ -14,7 +14,7 @@ import Criterion.Monad (withConfig)
 -- import Control.Monad.Primitive
 import System.Random.MWC.Probability (withSystemRandom)
 
-import Bench.Trie (randTrieInputString, randTrieInputBS, ag, jl, gt, bt)
+import Bench.Trie (randTrieInputString, randTrieInputBS, ag, jl, gt, bt, ts)
 
 
 main :: IO ()
@@ -45,7 +45,12 @@ main = withSystemRandom $ \g -> do
         bench "small" $ whnf bt bssmall
       , bench "medium" $ whnf bt bsmedium
       , bench "large" $ whnf bt bslarge      
-              ]      
+              ] ,
+    bgroup "trie-simple" [
+        bench "small" $ whnf ts ssmall
+      , bench "medium" $ whnf ts smedium
+      , bench "large" $ whnf ts slarge      
+              ]
     ]
 
 

@@ -6,6 +6,8 @@ packages:
 extra-deps:
 - generic-trie-0.3.1@sha256:203cfc0086372abaf99ffb4b4b565eba8a28e6020f1104ec479cd96d0c3baeb7
 - bytestring-trie-0.2.5.0@sha256:96498959cf2af0e3f1f3dfb526b78502c9fa8f21255a3506938ee2a26e61d653
+- trie-simple-0.4.1.1@sha256:ff23f3092a53f1275180f32d2475d4009a33939eb04a2869a1308e5e80e8651b
+- containers-0.5.11.0@sha256:28ad7337057442f75bc689315ab4ec7bdf5e6b2c39668f306672cecd82c02798
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

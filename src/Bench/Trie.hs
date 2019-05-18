@@ -13,7 +13,7 @@ import qualified Data.Trie.JustinLe as JL (Trie, fromList, lookup)
 
 import qualified "generic-trie" Data.GenericTrie as GT (Trie, fromList, lookup, TrieKey)
 import qualified "bytestring-trie" Data.Trie as BST
-
+import qualified "trie-simple" Data.Trie.Map as TST  (TMap, fromList, lookup)
 
 letters :: [Char]
 letters = ['a' .. 'z']
@@ -72,3 +72,7 @@ gt (kxs, k) = GT.lookup k $ GT.fromList kxs
 -- | bytestring-trie
 bt :: ([(B.ByteString, a)], B.ByteString) -> Maybe a
 bt (kxs, k) = BST.lookup k $ BST.fromList kxs  
+
+-- | trie-simple
+ts :: Ord c => ([([c], a)], [c]) -> Maybe a
+ts (kxs, k) = TST.lookup k $ TST.fromList kxs  
