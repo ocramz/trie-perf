@@ -3,7 +3,7 @@ module Main where
 import Weigh (Grouped (..), Weight (..), Weigh, mainWith, wgroup, func, io, commas, weighResults)
 import System.Random.MWC.Probability (withSystemRandom)
 
-import Bench.Trie (randTrieInputString, randTrieInputBS, ag, jl, gt, bt, ts)
+import Bench.Trie (randTrieInputString, randTrieInputBS, randTrieInputTxt, ag, jl, gt, bt, tt, ts)
 
 
 main :: IO ()
@@ -13,8 +13,11 @@ main = withSystemRandom $ \g -> do
   slarge <- randTrieInputString 300 300 100 g
   bssmall <- randTrieInputBS 3 3 1 g
   bsmedium <- randTrieInputBS 30 30 10 g
-  bslarge <- randTrieInputBS 300 300 100 g  
-  mainWith $ do 
+  bslarge <- randTrieInputBS 300 300 100 g
+  txtsmall <- randTrieInputTxt 3 3 1 g
+  txtmedium <- randTrieInputTxt 30 30 10 g
+  txtlarge <- randTrieInputTxt 300 300 100 g
+  mainWith $ do
     wgroup "AG" $ do
         func "small" ag ssmall
         func "medium" ag smedium
@@ -31,8 +34,12 @@ main = withSystemRandom $ \g -> do
         func "small" bt bssmall
         func "medium" bt bsmedium
         func "large" bt bslarge
+    wgroup "text-trie" $ do
+        func "small" tt txtsmall
+        func "medium" tt txtmedium
+        func "large" tt txtlarge
     wgroup "trie-simple" $ do
         func "small" ts ssmall
         func "medium" ts smedium
-        func "large" ts slarge             
-           
+        func "large" ts slarge
+

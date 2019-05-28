@@ -6,7 +6,7 @@ Performance shootout of various prefix tree ("trie") implementations.
 
 "space" benchmarking performed with `weigh` and "time" benchmarks done with `criterion`.
 
-Currently comparing two unoptimized implementations taken (but slightly modified) from didactic blogposts (https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/ and https://blog.jle.im/entry/tries-with-recursion-schemes.html) and three available on Hackage ([`generic-trie`](https://hackage.haskell.org/package/generic-trie), [`bytestring-trie`](https://hackage.haskell.org/package/bytestring-trie), and [`trie-simple`](https://hackage.haskell.org/package/trie-simple)).
+Currently comparing two unoptimized implementations taken (but slightly modified) from didactic blogposts (https://alexandersgreen.wordpress.com/2010/09/13/prefix-trees-in-haskell/ and https://blog.jle.im/entry/tries-with-recursion-schemes.html) and four available on Hackage ([`generic-trie`](https://hackage.haskell.org/package/generic-trie), [`bytestring-trie`](https://hackage.haskell.org/package/bytestring-trie), [`text-trie`](https://hackage.haskell.org/package/text-trie), and [`trie-simple`](https://hackage.haskell.org/package/trie-simple)).
 
 `generic-trie` seems to be the best choice, at least for a "lookup - fromList" pair, but I was curious to see how very diverse implementation techniques, notably one based on recursion schemes and another using an arrow type internally, lead to different space and time scaling behaviours.
 
@@ -16,8 +16,7 @@ Currently comparing two unoptimized implementations taken (but slightly modified
 Pull requests that extend and/or improve these benchmarks are very welcome.
 
 
-Results obtained on a 2015 MacBook Pro GHCi session :
-
+Results obtained on a 2017 MacBook Pro using `stack bench`:
 
 ```
 Benchmark space: RUNNING...
@@ -25,147 +24,176 @@ Benchmark space: RUNNING...
 AG
 
   Case    Allocated  GCs
-  small       1,360    0
-  medium     13,112    0
-  large     133,752    0
+  small       1,208    0
+  medium     12,968    0
+  large     133,456    0
 
 JL
 
   Case    Allocated  GCs
-  small       5,928    0
-  medium     61,824    0
-  large     637,056    0
+  small       5,976    0
+  medium     59,928    0
+  large     645,264    0
 
 generic-trie
 
   Case    Allocated  GCs
-  small       6,416    0
-  medium     25,608    0
-  large     218,344    0
+  small       4,320    0
+  medium     21,992    0
+  large     221,760    0
 
 bytestring-trie
 
   Case    Allocated  GCs
-  small       2,432    0
-  medium     52,656    0
-  large   2,598,008    2
+  small       2,224    0
+  medium     52,416    0
+  large   2,600,752    2
+
+text-trie
+
+  Case    Allocated  GCs
+  small       2,536    0
+  medium     62,264    0
+  large   3,071,280    2
 
 trie-simple
 
   Case     Allocated  GCs
-  small        2,992    0
-  medium     201,784    0
-  large   18,895,048   18
+  small        3,088    0
+  medium     201,448    0
+  large   18,897,064   18
 Benchmark space: FINISH
 ```
 
 ```
 Benchmark time: RUNNING...
 benchmarking AG/small
-time                 175.6 ns   (174.5 ns .. 177.3 ns)
-                     1.000 R²   (0.999 R² .. 1.000 R²)
-mean                 176.4 ns   (175.5 ns .. 178.1 ns)
-std dev              4.243 ns   (2.521 ns .. 7.114 ns)
-variance introduced by outliers: 34% (moderately inflated)
+time                 135.4 ns   (132.6 ns .. 138.7 ns)
+                     0.994 R²   (0.989 R² .. 0.998 R²)
+mean                 133.4 ns   (130.8 ns .. 138.2 ns)
+std dev              11.43 ns   (6.546 ns .. 17.15 ns)
+variance introduced by outliers: 87% (severely inflated)
 
 benchmarking AG/medium
-time                 5.278 μs   (5.249 μs .. 5.316 μs)
-                     0.999 R²   (0.999 R² .. 1.000 R²)
-mean                 5.320 μs   (5.267 μs .. 5.535 μs)
-std dev              306.5 ns   (102.7 ns .. 669.0 ns)
-variance introduced by outliers: 69% (severely inflated)
-
-benchmarking AG/large
-time                 87.55 μs   (86.39 μs .. 88.67 μs)
-                     0.999 R²   (0.999 R² .. 1.000 R²)
-mean                 87.88 μs   (86.85 μs .. 90.20 μs)
-std dev              4.967 μs   (1.965 μs .. 8.544 μs)
-variance introduced by outliers: 59% (severely inflated)
-
-benchmarking JL/small
-time                 1.060 μs   (1.055 μs .. 1.065 μs)
-                     0.999 R²   (0.999 R² .. 1.000 R²)
-mean                 1.074 μs   (1.061 μs .. 1.115 μs)
-std dev              70.53 ns   (22.19 ns .. 141.5 ns)
-variance introduced by outliers: 78% (severely inflated)
-
-benchmarking JL/medium
-time                 15.38 μs   (15.27 μs .. 15.52 μs)
-                     0.998 R²   (0.997 R² .. 0.999 R²)
-mean                 15.65 μs   (15.46 μs .. 15.90 μs)
-std dev              756.3 ns   (545.8 ns .. 1.075 μs)
-variance introduced by outliers: 57% (severely inflated)
-
-benchmarking JL/large
-time                 89.09 μs   (87.90 μs .. 90.15 μs)
-                     0.997 R²   (0.994 R² .. 0.999 R²)
-mean                 91.01 μs   (88.69 μs .. 97.55 μs)
-std dev              11.52 μs   (5.425 μs .. 24.76 μs)
+time                 4.207 μs   (4.111 μs .. 4.371 μs)
+                     0.989 R²   (0.981 R² .. 0.997 R²)
+mean                 4.364 μs   (4.246 μs .. 4.522 μs)
+std dev              452.0 ns   (337.3 ns .. 582.7 ns)
 variance introduced by outliers: 88% (severely inflated)
 
+benchmarking AG/large
+time                 70.83 μs   (68.15 μs .. 73.93 μs)
+                     0.991 R²   (0.986 R² .. 0.997 R²)
+mean                 69.11 μs   (67.75 μs .. 71.10 μs)
+std dev              5.418 μs   (3.809 μs .. 7.481 μs)
+variance introduced by outliers: 75% (severely inflated)
+
+benchmarking JL/small
+time                 887.7 ns   (866.9 ns .. 918.7 ns)
+                     0.993 R²   (0.983 R² .. 0.999 R²)
+mean                 886.1 ns   (874.1 ns .. 924.3 ns)
+std dev              64.19 ns   (32.05 ns .. 129.6 ns)
+variance introduced by outliers: 81% (severely inflated)
+
+benchmarking JL/medium
+time                 12.11 μs   (11.89 μs .. 12.40 μs)
+                     0.996 R²   (0.993 R² .. 0.999 R²)
+mean                 12.25 μs   (12.09 μs .. 12.48 μs)
+std dev              638.9 ns   (425.2 ns .. 969.5 ns)
+variance introduced by outliers: 62% (severely inflated)
+
+benchmarking JL/large
+time                 68.27 μs   (65.93 μs .. 71.35 μs)
+                     0.991 R²   (0.982 R² .. 1.000 R²)
+mean                 67.17 μs   (66.33 μs .. 69.05 μs)
+std dev              4.090 μs   (1.513 μs .. 7.208 μs)
+variance introduced by outliers: 63% (severely inflated)
+
 benchmarking generic-trie/small
-time                 469.9 ns   (468.0 ns .. 472.9 ns)
-                     1.000 R²   (0.999 R² .. 1.000 R²)
-mean                 475.3 ns   (471.0 ns .. 487.6 ns)
-std dev              23.10 ns   (7.637 ns .. 49.55 ns)
-variance introduced by outliers: 66% (severely inflated)
+time                 486.8 ns   (477.0 ns .. 499.4 ns)
+                     0.996 R²   (0.993 R² .. 0.998 R²)
+mean                 478.3 ns   (470.7 ns .. 489.4 ns)
+std dev              30.40 ns   (20.92 ns .. 48.38 ns)
+variance introduced by outliers: 77% (severely inflated)
 
 benchmarking generic-trie/medium
-time                 6.506 μs   (6.400 μs .. 6.647 μs)
-                     0.998 R²   (0.996 R² .. 0.999 R²)
-mean                 6.563 μs   (6.476 μs .. 6.725 μs)
-std dev              400.6 ns   (242.9 ns .. 685.1 ns)
-variance introduced by outliers: 71% (severely inflated)
+time                 4.786 μs   (4.620 μs .. 4.987 μs)
+                     0.994 R²   (0.988 R² .. 1.000 R²)
+mean                 4.677 μs   (4.627 μs .. 4.773 μs)
+std dev              222.9 ns   (99.69 ns .. 392.9 ns)
+variance introduced by outliers: 60% (severely inflated)
 
 benchmarking generic-trie/large
-time                 69.24 μs   (68.48 μs .. 70.16 μs)
-                     0.998 R²   (0.995 R² .. 0.999 R²)
-mean                 70.59 μs   (69.17 μs .. 76.47 μs)
-std dev              8.090 μs   (2.274 μs .. 17.78 μs)
-variance introduced by outliers: 86% (severely inflated)
+time                 52.39 μs   (50.40 μs .. 53.86 μs)
+                     0.994 R²   (0.992 R² .. 0.998 R²)
+mean                 50.30 μs   (49.64 μs .. 51.10 μs)
+std dev              2.537 μs   (1.805 μs .. 3.436 μs)
+variance introduced by outliers: 55% (severely inflated)
 
 benchmarking bytestring-trie/small
-time                 319.3 ns   (317.2 ns .. 322.8 ns)
-                     0.999 R²   (0.998 R² .. 1.000 R²)
-mean                 322.1 ns   (319.5 ns .. 326.4 ns)
-std dev              10.69 ns   (7.791 ns .. 13.87 ns)
-variance introduced by outliers: 48% (moderately inflated)
+time                 258.9 ns   (255.1 ns .. 263.4 ns)
+                     0.999 R²   (0.997 R² .. 1.000 R²)
+mean                 257.7 ns   (255.8 ns .. 261.0 ns)
+std dev              7.759 ns   (5.639 ns .. 11.23 ns)
+variance introduced by outliers: 44% (moderately inflated)
 
 benchmarking bytestring-trie/medium
-time                 4.354 μs   (4.292 μs .. 4.448 μs)
-                     0.997 R²   (0.994 R² .. 1.000 R²)
-mean                 4.371 μs   (4.324 μs .. 4.479 μs)
-std dev              225.9 ns   (146.2 ns .. 369.1 ns)
-variance introduced by outliers: 64% (severely inflated)
+time                 3.325 μs   (3.256 μs .. 3.426 μs)
+                     0.994 R²   (0.990 R² .. 0.998 R²)
+mean                 3.354 μs   (3.301 μs .. 3.433 μs)
+std dev              209.7 ns   (134.9 ns .. 298.7 ns)
+variance introduced by outliers: 73% (severely inflated)
 
 benchmarking bytestring-trie/large
-time                 90.30 μs   (89.40 μs .. 91.22 μs)
-                     0.999 R²   (0.999 R² .. 1.000 R²)
-mean                 89.86 μs   (89.33 μs .. 90.66 μs)
-std dev              2.082 μs   (1.396 μs .. 3.239 μs)
-variance introduced by outliers: 19% (moderately inflated)
+time                 73.46 μs   (72.62 μs .. 74.44 μs)
+                     0.994 R²   (0.987 R² .. 0.999 R²)
+mean                 74.85 μs   (72.91 μs .. 79.93 μs)
+std dev              9.677 μs   (3.383 μs .. 16.95 μs)
+variance introduced by outliers: 89% (severely inflated)
 
-benchmarking trie-simple/small
-time                 402.4 ns   (387.5 ns .. 422.7 ns)
-                     0.984 R²   (0.970 R² .. 0.998 R²)
-mean                 395.3 ns   (385.9 ns .. 415.2 ns)
-std dev              43.83 ns   (25.89 ns .. 70.51 ns)
+benchmarking text-trie/small
+time                 282.0 ns   (278.1 ns .. 286.3 ns)
+                     0.996 R²   (0.992 R² .. 0.999 R²)
+mean                 289.9 ns   (282.4 ns .. 304.0 ns)
+std dev              32.29 ns   (16.36 ns .. 51.40 ns)
 variance introduced by outliers: 92% (severely inflated)
 
+benchmarking text-trie/medium
+time                 3.279 μs   (3.237 μs .. 3.340 μs)
+                     0.997 R²   (0.992 R² .. 0.999 R²)
+mean                 3.396 μs   (3.311 μs .. 3.534 μs)
+std dev              352.3 ns   (223.2 ns .. 507.7 ns)
+variance introduced by outliers: 89% (severely inflated)
+
+benchmarking text-trie/large
+time                 74.49 μs   (73.21 μs .. 76.11 μs)
+                     0.996 R²   (0.993 R² .. 0.998 R²)
+mean                 78.65 μs   (76.51 μs .. 82.87 μs)
+std dev              10.06 μs   (6.959 μs .. 14.33 μs)
+variance introduced by outliers: 89% (severely inflated)
+
+benchmarking trie-simple/small
+time                 274.3 ns   (270.3 ns .. 279.6 ns)
+                     0.997 R²   (0.995 R² .. 0.999 R²)
+mean                 272.6 ns   (269.8 ns .. 277.2 ns)
+std dev              12.07 ns   (7.266 ns .. 18.85 ns)
+variance introduced by outliers: 63% (severely inflated)
+
 benchmarking trie-simple/medium
-time                 33.17 μs   (32.77 μs .. 33.71 μs)
-                     0.999 R²   (0.998 R² .. 1.000 R²)
-mean                 33.23 μs   (33.04 μs .. 33.54 μs)
-std dev              814.7 ns   (537.0 ns .. 1.141 μs)
-variance introduced by outliers: 23% (moderately inflated)
+time                 23.87 μs   (23.52 μs .. 24.49 μs)
+                     0.995 R²   (0.991 R² .. 0.999 R²)
+mean                 24.86 μs   (24.37 μs .. 25.73 μs)
+std dev              2.058 μs   (1.379 μs .. 3.075 μs)
+variance introduced by outliers: 79% (severely inflated)
 
 benchmarking trie-simple/large
-time                 19.79 ms   (18.73 ms .. 21.76 ms)
-                     0.969 R²   (0.921 R² .. 0.998 R²)
-mean                 20.43 ms   (19.77 ms .. 21.49 ms)
-std dev              1.875 ms   (1.201 ms .. 2.877 ms)
-variance introduced by outliers: 41% (moderately inflated)
+time                 16.70 ms   (15.57 ms .. 17.95 ms)
+                     0.977 R²   (0.956 R² .. 0.995 R²)
+mean                 16.51 ms   (16.05 ms .. 17.14 ms)
+std dev              1.378 ms   (1.037 ms .. 1.926 ms)
+variance introduced by outliers: 40% (moderately inflated)
 
 Benchmark time: FINISH
-
+Completed 2 action(s).
 ```
+

@@ -36,6 +36,8 @@ library
                      , generic-trie
                      , mwc-probability
                      , primitive
+                     , text
+                     , text-trie
                      , trie-simple
   if flag(Time)
     exposed-modules:   Bench.Trie.Time

@@ -8,12 +8,15 @@ import System.Random.MWC.Probability (create, withSystemRandom, samples, discret
 import qualified Data.ByteString as B hiding (pack)
 import qualified Data.ByteString.Char8 as B (pack)
 
+import qualified Data.Text as T (Text, pack)
+
 import qualified Data.Trie.AlexanderGreen as AG (Trie, Key, fromList, lookup)
 import qualified Data.Trie.JustinLe as JL (Trie, fromList, lookup)
 
 import qualified "generic-trie" Data.GenericTrie as GT (Trie, fromList, lookup, TrieKey)
 import qualified "bytestring-trie" Data.Trie as BST
 import qualified "trie-simple" Data.Trie.Map as TST  (TMap, fromList, lookup)
+import qualified "text-trie" Data.Trie.Text as TT (Trie, fromList, lookup)
 
 letters :: [Char]
 letters = ['a' .. 'z']
@@ -28,9 +31,16 @@ randBS m n g = replicateM m io where
   io = do
     str <- samples n (discreteUniform letters) g
     pure $ B.pack str
-    
 
-nth :: Int -> [c] -> c    
+randTxt :: PrimMonad m =>
+           Int -> Int -> Gen (PrimState m) -> m [T.Text]
+randTxt m n g = replicateM m io where
+  io = do
+    str <- samples n (discreteUniform letters) g
+    pure $ T.pack str
+
+
+nth :: Int -> [c] -> c
 nth n = head . drop (n-1)
 
 randTrieInput :: (Monad m, Num a, Enum a) =>
@@ -43,10 +53,10 @@ randTrieInput io i = do
 randTrieInputString :: PrimMonad m =>
                  Int  -- ^ # of random strings
               -> Int  -- ^ length of strings
-              -> Int  -- ^ position of key 
+              -> Int  -- ^ position of key
               -> Gen (PrimState m)
               -> m ([(String, Int)], String)
-randTrieInputString m n i g = randTrieInput (randStrings m n g) i  
+randTrieInputString m n i g = randTrieInput (randStrings m n g) i
 
 randTrieInputBS :: PrimMonad m =>
                    Int
@@ -55,6 +65,14 @@ randTrieInputBS :: PrimMonad m =>
                 -> Gen (PrimState m)
                 -> m ([(B.ByteString, Int)], B.ByteString)
 randTrieInputBS m n i g = randTrieInput (randBS m n g) i
+
+randTrieInputTxt :: PrimMonad m =>
+                    Int
+                 -> Int
+                 -> Int
+                 -> Gen (PrimState m)
+                 -> m ([(T.Text, Int)], T.Text)
+randTrieInputTxt m n i g = randTrieInput (randTxt m n g) i
 
 
 -- | Data.Trie.AlexanderGreen
@@ -67,12 +85,16 @@ jl (kxs, k) = JL.lookup k $ JL.fromList kxs
 
 -- | generic-trie
 gt :: GT.TrieKey k => ([(k, a)], k) -> Maybe a
-gt (kxs, k) = GT.lookup k $ GT.fromList kxs  
+gt (kxs, k) = GT.lookup k $ GT.fromList kxs
 
 -- | bytestring-trie
 bt :: ([(B.ByteString, a)], B.ByteString) -> Maybe a
-bt (kxs, k) = BST.lookup k $ BST.fromList kxs  
+bt (kxs, k) = BST.lookup k $ BST.fromList kxs
+
+-- | text-trie
+tt :: ([(T.Text, a)], T.Text) -> Maybe a
+tt (kxs, k) = TT.lookup k $ TT.fromList kxs
 
 -- | trie-simple
 ts :: Ord c => ([([c], a)], [c]) -> Maybe a
-ts (kxs, k) = TST.lookup k $ TST.fromList kxs  
+ts (kxs, k) = TST.lookup k $ TST.fromList kxs
